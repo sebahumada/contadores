@@ -1,9 +1,10 @@
-import React, { useReducer, useState } from 'react';
+// import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Contador } from './Contador';
 import { Regresiva } from './Regresiva';
 import { useDateTime } from './../hooks/useDateTime';
-import { contadorReducer } from '../reducers/contadorReducer';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 
 export const Contadores = () => {
 
@@ -12,51 +13,13 @@ export const Contadores = () => {
     
     const {fecha}= useDateTime();
 
-    const initState = ()=>{
-        return [];
-    }
-
-    const [contadores, dispatch] = useReducer(contadorReducer, [], initState);
-
-
-    const clickContador = ()=>{
-        const i=new Date().getTime();
-        dispatch({
-            type:'agregar',
-            payload:{
-                id:i,
-                tipo:'TIMER'
-            }
-        });
-    }
-
-    const clickCountDown = ()=>{
-        const i=new Date().getTime();
-        dispatch({
-            type:'agregar',
-            payload:{
-                id:i,
-                tipo:'REGRESIVA'
-            }
-        });
-    }
-
-    const clickReset = ()=>{
-        dispatch({
-            type:'reiniciar'            
-        });
-    }
-
-    const borrar = (n)=>{
-
-        console.log(contadores);
-        console.log(n);
-
-        dispatch({
-            type:'borrar',
-            payload:n
-        });
-    }
+   
+    const clickContador = useStoreActions((actions) => actions.clickContador);
+    const clickCountDown = useStoreActions((actions) => actions.clickCountDown);
+    const clickReset = useStoreActions((actions) => actions.clickReset);
+    const borrar = useStoreActions((actions) => actions.borrar);
+    const contadores = useStoreState((state) => state.contadores);
+    
 
     const oscurecer =()=>{
 
